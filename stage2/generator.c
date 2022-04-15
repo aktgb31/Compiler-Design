@@ -32,7 +32,7 @@ void initGenerator(FILE *targetFile)
 {
     // XMAGIC, Entry Point, Text Size, Data Size, Heap Size, Stack Size, Library Flag, Unused
     fprintf(targetFile, "%d\n%d\n%d\n%d\n%d\n%d\n%d\n%d\n", XMAGIC, ENTRY_POINT, TEXT_SIZE, DATA_SIZE, HEAP_SIZE, STACK_SIZE, LIBRARY_FLAG, UNUSED);
-    fprintf(targetFile, "MOV SP, %d\n", 4095);
+    fprintf(targetFile, "MOV SP, %d\n", 4095 + 26);
     for (int i = 1; i <= 26; i++)
         fprintf(targetFile, "MOV [%d], 0\n", 4095 + i);
 }

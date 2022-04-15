@@ -29,7 +29,12 @@ program: PBEGIN Slist PEND {
     fclose(targetFile);
     exit(0);
 }
-| PBEGIN PEND{exit(0);}
+| PBEGIN PEND{ 
+    FILE *targetFile=fopen("B190343CS.xsm","w");
+    initGenerator(targetFile);
+    codeExit(targetFile);
+    fclose(targetFile);
+    exit(0);}
 ;
 
 Slist: Slist Stmt{$$=makeNonLeafNode('c',NTCONNECTOR,$1,$2);}
