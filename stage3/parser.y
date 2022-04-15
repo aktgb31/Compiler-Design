@@ -16,6 +16,10 @@
 
 %type <node> E program Stmts Stmt AsgStmt ReadStmt WriteStmt IfStmt IfElseStmt WhileStmt
 %token NUM PLUS MINUS MUL EQUALS FUN VAR READ WRITE LE GE EQ NE DO WHILE IF ELSE 
+
+%nonassoc EQUALS 
+%nonassoc EQ NE
+%nonassoc LE GE
 %left PLUS MINUS
 %left MUL
 
@@ -41,12 +45,12 @@ Stmts: Stmts Stmt{$$=makeNonLeafNode('c',NTCONNECTOR,$1,$2);}
      | Stmt{$$=$1;}
      ;
 
-Stmt : AsgStmt {$$=$1;}
-    | IfStmt {$$=$1;}
-    | IfElseStmt {$$=$1;}
-    | WhileStmt {$$=$1;}
-    | ReadStmt {$$=$1;}
-    | WriteStmt {$$=$1;}
+Stmt : AsgStmt 
+    | IfStmt 
+    | IfElseStmt 
+    | WhileStmt 
+    | ReadStmt 
+    | WriteStmt 
     ;
 
 AsgStmt : VAR EQUALS E ';' {$$=makeNonLeafNode('=',NTOPERATOR,$<node>1,$3);}
