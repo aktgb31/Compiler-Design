@@ -332,7 +332,7 @@ void linker(FILE *from, FILE *to)
         fgets(buffer, 32, from);
         if (buffer[0] == 'L') // Skip labels
             continue;
-        if (buffer[0] != 'J' && buffer != 'C') // not jump and call
+        if (buffer[0] != 'J' && buffer[0] != 'C') // not jump and call
         {
             fprintf(to, "%s", buffer);
             continue;
