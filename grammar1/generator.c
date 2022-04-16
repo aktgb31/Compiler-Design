@@ -141,7 +141,7 @@ void codeExit(FILE *targetFile)
     fprintf(targetFile, "PUSH R2\n"); // Pushed argument 2
     fprintf(targetFile, "PUSH R2\n"); // Pushed argument 3
     fprintf(targetFile, "PUSH R2\n"); // Pushed return value
-    fprintf(targetFile, "INT 10\n");  // Interrupt Routine Number
+    fprintf(targetFile, "INT 10");    // Interrupt Routine Number
     IP += 7;
 }
 
@@ -359,7 +359,7 @@ void linker(FILE *from, FILE *to)
         fgets(buffer, 32, from);
         if (buffer[strlen(buffer) - 2] == ':') // Skip labels
             continue;
-        if (buffer[0] != 'J' && buffer[0] != 'C') // not jump and call
+        if (buffer[0] != 'J') // not jump
         {
             fprintf(to, "%s", buffer);
             continue;

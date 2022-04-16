@@ -1,6 +1,6 @@
 all: parser lexer generator execute clean
 
-debug: parser lexer dgenerator execute clean
+debug: parser lexer dgenerator execute
 
 parser: parser.y
 	yacc -d parser.y

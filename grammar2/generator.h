@@ -28,7 +28,7 @@ struct tnode
     struct tnode *left, *right;
 };
 
-int localScope = 0;
+extern int localScope;
 
 struct tnode *makeLeafVar(char *var);
 

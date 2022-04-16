@@ -26,13 +26,13 @@
 ">=" {return GE;}
 "==" {return EQ;}
 "!=" {return NE;}
-";"     {return *yytext;}
+";"   {return *yytext;}
+"{"   {++localScope;return *yytext;}
+"}"   {--localScope;return *yytext;}
 " "     {}
 [ \t]	{}
 [()]	{return *yytext;}
 [\n]	{}
-"{"   {++localscope;return *yytext;}
-"}"   {--localscope;return *yytext;}
 .	{yyerror("unknown character\n");exit(1);}
 
 %%

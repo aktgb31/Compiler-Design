@@ -14,10 +14,10 @@
     struct tnode *node;
 }
 
-%type <node> E program Stmts Stmt AsgStmt ReadStmt WriteStmt IfStmt IfElseStmt
-%token NUM PLUS MINUS MUL EQUALS FUN VAR READ WRITE LE GE EQ NE IF ELSE 
+%type <node> E program Stmts Stmt AsgStmt ReadStmt WriteStmt IfStmt IfElseStmt RetStmt
+%token NUM PLUS MINUS MUL EQUALS FUN VAR READ WRITE LE GE EQ NE IF ELSE RETURN
 
-%nonassoc EQUALS 
+%left EQUALS 
 %nonassoc EQ NE
 %nonassoc LE GE
 %left PLUS MINUS
@@ -25,25 +25,24 @@
 
 %%
 
-program: ReadStmt ';' VAR EQUALS FUN '(' VAR ')' '{' Stmts '}' WriteStmt ';' { 
-    if(strcmp($3->varName,"argc")!=0 && strcmp($7->varName,"argc)!=0)
+program: ReadStmt VAR EQUALS FUN '(' VAR ')' '{' Stmts '}' WriteStmt { 
+    if(strcmp($<node>2->varName,"argc")!=0 && strcmp($<node>6->varName,"argc")!=0)
     {
         printf("Error: Invalid Syntax\n");
         exit(1);
     }
-
-    struct tnode *funCall=makeNonLeafNode('f',NTFUNCALL,$7,NULL);
-    struct tnode *equal=makeNonLeafNode('=',NTOPERATOR,$3,funCall);
-    struct tnode *funDecl=makeNonLeafNode('f',NTFUNDECL,$10,NULL);
+    struct tnode *funCall=makeNonLeafNode('f',NTFUNCALL,$<node>6,NULL);
+    struct tnode *equal=makeNonLeafNode('=',NTOPERATOR,$<node>2,funCall);
+    struct tnode *funDecl=makeNonLeafNode('f',NTFUNDECL,$9,NULL);
     
-    struct tnode * connector1=makeNonLeafNode('c',NTCONNECTOR,equal,$12);
+    struct tnode * connector1=makeNonLeafNode('c',NTCONNECTOR,equal,$11);
     struct tnode * connector2=makeNonLeafNode('c',NTCONNECTOR,funDecl,connector1);
     $$=makeNonLeafNode('c',NTCONNECTOR,$1,connector2);
 
 
     FILE *intermediateFile=fopen("intermediateFile.xsm","w+");
     initGenerator(intermediateFile);
-    evaluate($5,intermediateFile); 
+    evaluate($$,intermediateFile); 
     codeExit(intermediateFile);
     rewind(intermediateFile);
 
@@ -63,6 +62,7 @@ Stmts: Stmts Stmt{$$=makeNonLeafNode('c',NTCONNECTOR,$1,$2);}
 Stmt : AsgStmt 
     | IfStmt 
     | IfElseStmt 
+    | WriteStmt
     | RetStmt
     ;
 
@@ -81,7 +81,7 @@ RetStmt : RETURN E ';' {$$=makeNonLeafNode('r',NTRETURN,$2,NULL);}
         ;
 
 ReadStmt : READ '(' VAR ')' ';' {
-    if(strcmp($3->varName,"argc")!=0)
+    if(strcmp($<node>3->varName,"argc")!=0)
     {
         printf("Error: Invalid Syntax\n");
         exit(1);
@@ -91,7 +91,7 @@ ReadStmt : READ '(' VAR ')' ';' {
          ;
 
 WriteStmt : WRITE '(' VAR ')' ';' {
-    if(strcmp($3->varName,"argc")!=0)
+    if(strcmp($<node>3->varName,"argc")!=0)
     {
         printf("Error: Invalid Syntax\n");
         exit(1);
@@ -115,7 +115,7 @@ E: E PLUS E {$$=makeNonLeafNode('+',NTOPERATOR,$1,$3);}
 %%
 
 int yyerror (char const *s){
-    printf("yyerror %s",s);
+    printf("yyerror %s\n",s);
 }
 
 int main(void){
