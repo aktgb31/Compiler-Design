@@ -19,7 +19,7 @@
 
 %right EQUALS 
 %left EQ NE
-%left LE GE
+%left LE GE LT GT
 %left PLUS MINUS
 %left MUL
 

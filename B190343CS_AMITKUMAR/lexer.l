@@ -8,15 +8,13 @@
     char *var;
 %}
 
-%option caseless
-
 %%
 
 "FUN" {return FUN;}
 "read" {return READ;}
 "write" {return WRITE;}
 "return" {return RETURN;}
-"If" {return IF;}
+"if" {return IF;}
 "else" {return ELSE;}
 [A-Za-z][A-Za-z0-9]* {var=yytext;yylval.node=makeLeafVar(var);return VAR;}
 [0-9]+	{number = atoi(yytext); yylval.node = makeLeafNum(number); return NUM;}

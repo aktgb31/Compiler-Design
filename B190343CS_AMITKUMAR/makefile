@@ -10,7 +10,7 @@ generator: y.tab.c lex.yy.c
 	gcc y.tab.c lex.yy.c -o generator.out
 
 execute: generator
-	./generator.out
+	./generator.out <$(input)
 
 clean:
 	rm -f *.o *.out *.tab.c *.tab.h *.yy.c *.yy.h intermediateFile.xsm
