@@ -6,6 +6,8 @@
 
 	int number;
     char *var;
+    int yyerror(char const*s);
+
 %}
 
 %%

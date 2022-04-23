@@ -7,7 +7,7 @@
     
     
     int yylex(void);
-    
+    int yyerror(char const*s);
 %}
 
 %union{
@@ -50,8 +50,6 @@ program: ReadStmt VAR EQUALS FUN '(' VAR ')' '{' Stmts '}' WriteStmt {
     linker(intermediateFile,targetFile);
     fclose(intermediateFile);
     fclose(targetFile);
-
-    exit(0);
 }
 ;
 
